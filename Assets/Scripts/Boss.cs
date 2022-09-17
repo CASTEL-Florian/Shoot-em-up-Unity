@@ -29,8 +29,8 @@ public class Boss : MonoBehaviour
         {
             nextAttacks.Add(i);
         }
-        StartCoroutine(healthBarFader.FadeIn());
         healthBar.UpdateBar(1, false);
+        StartCoroutine(healthBarFader.FadeIn());
     }
     private void Update()
     {

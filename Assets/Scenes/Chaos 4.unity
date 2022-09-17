@@ -843,8 +843,8 @@ MonoBehaviour:
   timeBeforeEndTransition: 3
   levelTextTime: 1
   objectFade: {fileID: 1711442762}
-  nextSceneId: 9
-  levelId: 10
+  nextSceneId: 10
+  levelId: 9
   musicVolume: 0.5
 --- !u!4 &1711442761
 Transform:
