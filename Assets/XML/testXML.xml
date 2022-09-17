@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LevelData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <enemyType>
+    <string>greenEnemy</string>
+    <string>greenEnemy</string>
+    <string>greenEnemy</string>
+    <string>greenEnemy</string>
+    <string>greenEnemy</string>
+
+  </enemyType>
+  <timeBetweenSpawn>
+    <float>0.5</float>
+    <float>1</float>
+    <float>0.5</float>
+    <float>1</float>
+  </timeBetweenSpawn>
+</LevelData>
