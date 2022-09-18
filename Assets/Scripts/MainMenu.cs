@@ -14,6 +14,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Background background;
     [SerializeField] private TextMeshProUGUI chaosText;
     [SerializeField] private FadeAudioSource audioFader;
+    [SerializeField] private AudioSource clickAudio;
     private bool starting = false;
     private float time = 0;
 
@@ -21,20 +22,25 @@ public class MainMenu : MonoBehaviour
     private Fader fader;
     private bool chaosMode = false;
     private PlayerControls controls;
+    private bool lastFrameDirection = false;
+    
     private void Awake()
     {
         controls = new PlayerControls();
         controls.MainMenu.Start.performed += ctx => LoadScene();
+        controls.MainMenu.ChaosMode.performed += ctx => ToggleChaosMode();
+        controls.MainMenu.ChangeLevel.performed += ctx => ChangeLevelButton(ctx.ReadValue<float>());
+
     }
 
     private void OnEnable()
     {
-        controls.Enable();
+        controls.MainMenu.Enable();
     }
 
     private void OnDisable()
     {
-        controls.Disable();
+        controls.MainMenu.Disable();
     }
     private void Start()
     {
@@ -85,8 +91,31 @@ public class MainMenu : MonoBehaviour
             scoreText.text = "Best score : 0";
     }
 
+    private void PreviousLevel()
+    {
+        if (levelSelected == 0)
+            return;
+        ChangeLevelSelected(-1);
+        clickAudio.Play();
+    }
+    private void NextLevel()
+    {
+        if (levelSelected == numberOfLevels - 1)
+            return;
+        ChangeLevelSelected(1);
+        clickAudio.Play();
+    }
+
+    private void ChangeLevelButton(float value)
+    {
+        if (value > 0)
+            NextLevel();
+        if (value < 0)
+            PreviousLevel();
+    }
     public void ToggleChaosMode()
     {
+        clickAudio.Play();
         chaosMode = !chaosMode;
         background.ToggleDoubleSpeed();
         levelText.text = (chaosMode ? "Chaos " : "Level ") + (levelSelected + 1).ToString();

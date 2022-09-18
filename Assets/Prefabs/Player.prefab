@@ -175,6 +175,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 3596556787880600669}
+  energyManager: {fileID: 1758705436881963807}
+  dashEnergy: 0.3
 --- !u!114 &3596556787880600659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,8 +199,6 @@ MonoBehaviour:
   dodgeDuration: 0.15
   dodgeSpeed: 50
   hitManager: {fileID: 4554294883947122548}
-  energyManager: {fileID: 1758705436881963807}
-  dashEnergy: 0.3
   pauseMenu: {fileID: 0}
 --- !u!114 &4554294883947122548
 MonoBehaviour:
@@ -387,6 +387,7 @@ MonoBehaviour:
   maxHealth: 10
   speed: 10
   deathEffect: {fileID: 9103450973588720306, guid: bffdc1d6b11fd214f957188af8546e14, type: 3}
+  rend: {fileID: 3160787956286326640}
 --- !u!114 &1758705436881963807
 MonoBehaviour:
   m_ObjectHideFlags: 0

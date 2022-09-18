@@ -78,6 +78,9 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDead()
     {
+        if (gameEnded)
+          return;
+        gameEnded = true;
         StartCoroutine(audioFade.StartFade(1, 0));
         StartCoroutine(fader.TransitionToScene(SceneManager.GetActiveScene().buildIndex));
     }

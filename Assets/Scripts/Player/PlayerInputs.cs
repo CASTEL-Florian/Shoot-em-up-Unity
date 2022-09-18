@@ -12,14 +12,9 @@ public class PlayerInputs : MonoBehaviour
     private float speed;
     [SerializeField] private float maxDoubleClickTime = 0.2f;
     private float doubleClickTime = 0;
-    private Vector2 lastDir;
-    private bool lastNeutral = true;
     [SerializeField] private float dodgeDuration = 0.3f;
     [SerializeField] private float dodgeSpeed = 30f;
     [SerializeField] private HitManager hitManager;
-    [SerializeField] private EnergyManager energyManager;
-    private bool isDodging = false;
-    [SerializeField] float dashEnergy = 0.3f;
     [SerializeField] GameObject pauseMenu;
 
     private void Start()
@@ -31,6 +26,7 @@ public class PlayerInputs : MonoBehaviour
         controls = new PlayerControls();
         controls.Player.SwitchWeapon.performed += ctx => SwitchWeapon();
         controls.Player.Pause.performed += ctx => Pause();
+        controls.Player.Dash.performed += ctx => Dash();
 
     }
     private void OnEnable()
@@ -40,6 +36,7 @@ public class PlayerInputs : MonoBehaviour
 
     private void OnDisable()
     {
+        shootings[currentShooting].SetActive(false);
         controls.Disable();
     }
 
@@ -51,28 +48,10 @@ public class PlayerInputs : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (isDodging)
+        if (controller.IsDashing())
             return;
         Vector2 move = controls.Player.Move.ReadValue<Vector2>();
         controller.Move(move * speed);
-        if (move.magnitude == 1)
-        {
-            if (move == lastDir && doubleClickTime < maxDoubleClickTime && lastNeutral && !energyManager.isFullReloading())
-            {
-                energyManager.UseEnergy(dashEnergy);
-                StartCoroutine(DodgeRoutine(move));
-            }
-            else
-            {
-                if (lastNeutral)
-                    doubleClickTime = 0;
-                lastDir = move;
-            }
-        }
-        if (move.magnitude == 0)
-            lastNeutral = true;
-        else
-            lastNeutral = false;
     }
 
     private void SwitchWeapon()
@@ -83,13 +62,17 @@ public class PlayerInputs : MonoBehaviour
             currentShooting = 0;
     }
 
-  
-    private IEnumerator DodgeRoutine(Vector2 move)
+    private void Dash()
     {
-        isDodging = true;
+        if (Time.timeScale == 0)
+            GameManager.Instance.ReturnToMainMenu();
+        StartCoroutine(DodgeRoutine());
+
+    }
+    private IEnumerator DodgeRoutine()
+    {
         StartCoroutine(hitManager.SetInvisible(dodgeDuration));
-        yield return controller.Dodge(move, dodgeSpeed, dodgeDuration);
-        isDodging = false;
+        yield return controller.Dodge(dodgeSpeed, dodgeDuration);
     }
 
     private void Pause()
