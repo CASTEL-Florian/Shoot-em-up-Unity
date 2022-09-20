@@ -39,8 +39,9 @@ public class Fader : MonoBehaviour
         {
             transitioning = true;
             yield return FadeOut(fadeOutTime);
+            transitioning = false;
             Time.timeScale = 1;
-            yield return SceneManager.LoadSceneAsync(sceneIndex);
+            SceneManager.LoadScene(sceneIndex);
         }
     }
 }

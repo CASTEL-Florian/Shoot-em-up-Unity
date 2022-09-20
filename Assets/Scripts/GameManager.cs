@@ -14,9 +14,10 @@ public class GameManager : MonoBehaviour
     private FadeAudioSource audioFade;
     public static GameManager Instance;
     private Fader fader;
-    private int enemyCount = 0;
+    private int enemyCount = 1;
     private bool gameEnded = false;
     private bool gameStarted = false;
+    private float safetyTimer = 0;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -54,6 +55,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (gameEnded)
+        {
+            safetyTimer += Time.unscaledDeltaTime;
+        }
+        if (safetyTimer >= 1.5f)
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         if (gameStarted && !gameEnded && enemyCount == 0)
         {
             StartCoroutine(EndGame());
@@ -87,7 +94,7 @@ public class GameManager : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
-        StartCoroutine(fader.TransitionToScene(0));
+        SceneManager.LoadScene(0);
     }
 
     public int GetEnemyRemaining()
