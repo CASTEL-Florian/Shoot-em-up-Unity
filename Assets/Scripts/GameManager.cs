@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     private int enemyCount = 1;
     private bool gameEnded = false;
     private bool gameStarted = false;
-    private float safetyTimer = 0;
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -55,12 +54,6 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (gameEnded)
-        {
-            safetyTimer += Time.unscaledDeltaTime;
-        }
-        if (safetyTimer >= 1.5f)
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         if (gameStarted && !gameEnded && enemyCount == 0)
         {
             StartCoroutine(EndGame());
